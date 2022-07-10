@@ -31,7 +31,12 @@ export class AdvertisementsService {
   }
 
   createAdvertisement(request: AdvertisementCreateRequestDto) {
-    const advertisement = this.advertisementsRepository.create(request);
+    const advertisement = this.advertisementsRepository.create({
+      ...request,
+      views: 0,
+      ownerId: '73aef2dd-c227-4774-b547-b3117b543863',
+      date: new Date().toISOString(),
+    });
     return this.advertisementsRepository.save(advertisement);
   }
 

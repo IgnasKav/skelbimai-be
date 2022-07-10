@@ -7,13 +7,16 @@ import {
   ParseUUIDPipe,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { AdvertisementsService } from './advertisements.service';
 import { SearchRequestDto } from './dto/searchRequest.dto';
 import { AddToWatchLaterRequestDto } from './dto/addToWatchLaterRequest.dto';
 import { AdvertisementCreateRequestDto } from './dto/advertisementCreateRequest.dto';
 import { AdvertisementUpdateRequestDto } from './dto/advertisementUpdateRequest.dto';
+import { AuthenticatedGuard } from '../auth/authenticated.guard';
 
+@UseGuards(AuthenticatedGuard)
 @Controller('advertisements')
 export class AdvertisementsController {
   constructor(private readonly advertisementsService: AdvertisementsService) {}
