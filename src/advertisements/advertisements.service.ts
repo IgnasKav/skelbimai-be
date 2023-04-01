@@ -6,16 +6,18 @@ import { AdvertisementEntity } from './entities/advertisement.entity';
 import { Repository } from 'typeorm';
 import { AdvertisementCreateRequestDto } from './dto/advertisementCreateRequest.dto';
 import { AdvertisementUpdateRequestDto } from './dto/advertisementUpdateRequest.dto';
+import { AdvertisementSearchService } from '../search/advertisements/advertisement-search.service';
 
 @Injectable()
 export class AdvertisementsService {
   constructor(
     @InjectRepository(AdvertisementEntity)
     private readonly advertisementsRepository: Repository<AdvertisementEntity>,
+    private readonly advertisementSearchService: AdvertisementSearchService,
   ) {}
 
   searchAdvertisements(request: SearchRequestDto) {
-    return request;
+    return this.advertisementSearchService.search(request.query);
   }
 
   async getAdvertisementById(id: string) {
@@ -30,14 +32,16 @@ export class AdvertisementsService {
     return advertisement;
   }
 
-  createAdvertisement(request: AdvertisementCreateRequestDto) {
+  async createAdvertisement(request: AdvertisementCreateRequestDto) {
     const advertisement = this.advertisementsRepository.create({
       ...request,
       views: 0,
       ownerId: '73aef2dd-c227-4774-b547-b3117b543863',
       date: new Date().toISOString(),
     });
-    return this.advertisementsRepository.save(advertisement);
+    await this.advertisementsRepository.save(advertisement);
+    await this.advertisementSearchService.create(advertisement);
+    return advertisement;
   }
 
   async updateAdvertisement(

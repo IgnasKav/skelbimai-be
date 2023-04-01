@@ -4,6 +4,7 @@ import { AdvertisementsModule } from './advertisements/advertisementsModule';
 import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { SearchModule } from './search/search.module';
 import * as Joi from '@hapi/joi';
 
 @Module({
@@ -15,6 +16,9 @@ import * as Joi from '@hapi/joi';
         DATABASE_USERNAME: Joi.required(),
         DATABASE_PASSWORD: Joi.required(),
         DATABASE_NAME: Joi.required(),
+        ELASTICSEARCH_PASSWORD: Joi.required(),
+        ELASTICSEARCH_USERNAME: Joi.required(),
+        ELASTICSEARCH_NODE: Joi.required(),
       }),
     }),
     TypeOrmModule.forRoot({
@@ -30,6 +34,7 @@ import * as Joi from '@hapi/joi';
     AdvertisementsModule,
     UserModule,
     AuthModule,
+    SearchModule,
   ],
   controllers: [],
   providers: [],
